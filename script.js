@@ -74,23 +74,13 @@ function updateBigCup() {
 
 }
 
-// Fetch the public IP of the instance from an external API
-// fetch('https://api.ipify.org?format=json')
-//     .then(response => response.json())
-//     .then(data => {
-//       document.getElementById('ec2-ip').textContent = data.ip;
-//     })
-//     .catch(error => {
-//       document.getElementById('ec2-ip').textContent = 'Unable to load IP.';
-//       console.error('Error fetching public IP:', error);
-//     });
-
-fetch('http://169.254.169.254/latest/meta-data/public-ipv4', { mode: 'no-cors' })
-  .then(response => response.text())
-  .then(ip => {
-    document.getElementById('ec2-ip').textContent = ip;
+// Get instance metadata from our own server
+fetch('/instance.json')
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('ec2-ip').textContent = `Instance: ${data.instanceId} - Public IP: ${data.publicIp}`;
   })
   .catch(error => {
-    document.getElementById('ec2-ip').textContent = 'Unable to load IP.';
-    console.error('Error fetching instance IP:', error);
+    document.getElementById('ec2-ip').textContent = 'Unable to load instance info.';
+    console.error('Error fetching instance info:', error);
   });
