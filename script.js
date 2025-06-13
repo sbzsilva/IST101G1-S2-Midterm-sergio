@@ -78,7 +78,7 @@ function updateBigCup() {
 fetch('/instance.json')
   .then(response => response.json())
   .then(data => {
-    document.getElementById('ec2-ip').textContent = `Instance: ${data.instanceId} - Public IP: ${data.publicIp}`;
+    document.getElementById('ec2-ip').textContent = `Public IP: ${data.publicIp}`;
   })
   .catch(error => {
     document.getElementById('ec2-ip').textContent = 'Unable to load instance info.';

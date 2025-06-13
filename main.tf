@@ -212,7 +212,7 @@ resource "aws_launch_template" "web" {
               # Update system and install required packages
               sudo yum update -y
               sudo amazon-linux-extras install epel -y
-              sudo yum install -y httpd git stress
+              sudo yum install -y httpd git stress curl
               
               # Start and enable Apache
               sudo systemctl start httpd
@@ -231,6 +231,13 @@ resource "aws_launch_template" "web" {
               # Ensure proper permissions
               sudo chown -R apache:apache /var/www/html
               sudo chmod -R 755 /var/www/html
+              
+              # Get instance metadata
+              INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+              PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+              
+              # Create a simple API endpoint for our instance info
+              echo "{\"instanceId\":\"$INSTANCE_ID\",\"publicIp\":\"$PUBLIC_IP\"}" | sudo tee /var/www/html/instance.json > /dev/null
               
               # Restart Apache to apply changes
               sudo systemctl restart httpd
