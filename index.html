@@ -30,7 +30,22 @@
 <body>
   <h1 id="title">MidTerm Exam - DevOps Infrastructure Level 1</h1>
   <h1>Sergio Silva</h1>
-  <h1 id='ec2-ip'></h1>
+  <p>My EC2 Instance Public IP:</p>
+  <div id="ec2-ip">Loading...</div>
+
+  <script>
+    // Fetch the public IP of the instance from an external API
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('ec2-ip').textContent = data.ip;
+      })
+      .catch(error => {
+        document.getElementById('ec2-ip').textContent = 'Unable to load IP.';
+        console.error('Error fetching public IP:', error);
+      });
+  </script>
+
   <h2>6/12/2025</h2>
 
   <div class="container">

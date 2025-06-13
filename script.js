@@ -70,23 +70,5 @@ function updateBigCup() {
         liters.innerText = `${2 - (250 * fullCups / 1000)}L`
     }
 
-
-
 }
 
-// Fetch the public IP of the instance from an external API
-fetch('https://api.ipify.org?format=json')
-  .then(response => response.json())
-  .then(data => {
-    document.getElementById('ec2-ip').textContent = data.ip;
-  })
-  .catch(error => {
-    document.getElementById('ec2-ip').textContent = 'Unable to load IP.';
-    console.error('Error fetching public IP:', error);
-    // Additional debugging info
-    if (!navigator.onLine) {
-      console.warn('You are currently offline.');
-    } else {
-      console.warn('Check CORS policies or try accessing from a hosted server.');
-    }
-  });
