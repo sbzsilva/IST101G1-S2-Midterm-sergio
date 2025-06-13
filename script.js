@@ -1,3 +1,24 @@
+/* 
+<!-- MidTerm Exam - DevOps Infrastructure Level 1 -->
+<!-- CCTB | Canadian College of Technology and Business -->
+<!-- Description: 
+    
+    H2O Challenge Web Application
+
+    Description: This web application helps users track their daily water intake with a goal of 2 liters.
+    The interface is divided into two panels:
+    - Left Panel: Displays the challenge title, goal, and a visual representation of the remaining water to be consumed.
+    - Right Panel: Allows users to select how many 250ml glasses of water they have drank.
+    
+    The app is designed to encourage healthy hydration habits in a simple and interactive way.
+
+    Instructor: Washington Valencia
+    Course: CCTB - DevOps Infrastructure Level 1
+    MidTerm Exam Project 
+
+    Note: This project is adapted from a public project. Original credits go to the respective author(s).
+-->
+*/
 const smallCups = document.querySelectorAll('.cup-small')
 const liters = document.getElementById('liters')
 const percentage = document.getElementById('percentage')
@@ -35,6 +56,7 @@ function updateBigCup() {
         percentage.style.height = 0
     } else {
         percentage.style.visibility = 'visible'
+        // Calculate height based on percentage of total cups
         percentage.style.height = `${(fullCups / totalCups) * 100}%`
         percentage.innerText = `${(fullCups / totalCups) * 100}%`
     }
@@ -44,47 +66,22 @@ function updateBigCup() {
         remained.style.height = 0
     } else {
         remained.style.visibility = 'visible'
+        // Calculate remaining liters (2L total - filled amount)
         liters.innerText = `${2 - (250 * fullCups / 1000)}L`
     }
+
+
+
 }
 
-// Improved IP Fetching with multiple fallback APIs
-function fetchPublicIP() {
-  const ipApis = [
-    'https://api.ipify.org?format=json',
-    'https://ipapi.co/json/',
-    'https://ipinfo.io/json'
-  ];
-  
-  const tryApi = async (index = 0) => {
-    try {
-      const response = await fetch(ipApis[index]);
-      if (!response.ok) throw new Error('API failed');
-      const data = await response.json();
-      document.getElementById('ec2-ip').textContent = `Server IP: ${data.ip || data.ipAddress}`;
-    } catch (error) {
-      if (index < ipApis.length - 1) {
-        tryApi(index + 1);
-      } else {
-        document.getElementById('ec2-ip').textContent = 'Server IP: Not Available';
-        console.error('All IP APIs failed:', error);
-      }
-    }
-  };
-  
-  tryApi(0);
-}
+// Fetch the public IP of the instance from an external API
+  fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('ec2-ip').textContent = data.ip;
+    })
+    .catch(error => {
+      document.getElementById('ec2-ip').textContent = 'Unable to load IP.';
+      console.error('Error fetching public IP:', error);
+    });
 
-// Function to update the date and time
-function updateDateTime() {
-  const now = new Date();
-  const datetimeElement = document.getElementById('datetime');
-  if (datetimeElement) {
-    datetimeElement.textContent = now.toLocaleString();
-  }
-}
-
-// Initialize everything
-fetchPublicIP();
-updateDateTime();
-setInterval(updateDateTime, 1000);
