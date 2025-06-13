@@ -85,3 +85,15 @@ function updateBigCup() {
       console.error('Error fetching public IP:', error);
     });
 
+// Function to update the date and time
+function updateDateTime() {
+  const now = new Date();
+  const datetimeElement = document.getElementById('datetime');
+  if (datetimeElement) {
+    datetimeElement.textContent = now.toLocaleString();
+  }
+}
+
+// Update immediately and every second
+updateDateTime();
+setInterval(updateDateTime, 1000);
